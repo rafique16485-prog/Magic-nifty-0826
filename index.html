@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>APEX TERMINAL | 9 EMA & VWAP PRO</title>
   
-  <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
     * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     .mono { font-family: 'JetBrains Mono', monospace; }
     body { background-color: #06090f; color: #f1f5f9; }
@@ -34,9 +33,9 @@
       <span>NIFTY: <b id="ticker-nifty" class="text-cyan-400 font-bold">24550.00</b></span>
     </div>
     <div class="flex items-center gap-3">
-      <span id="terminal-clock" class="text-slate-400 font-semibold">--:--:-- IST</span>
+      <span id="terminal-clock" class="text-slate-400 font-semibold">SYNCING...</span>
       <span id="api-status-badge" class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
-        Upstox: Offline
+        Upstox: Ready
       </span>
     </div>
   </div>
@@ -80,7 +79,7 @@
     <!-- TAB 1: LIVE SCANNER -->
     <div id="tab-scanner" class="space-y-3 view-tab">
 
-      <!-- TOP METRICS GRID -->
+      <!-- TOP METRICS -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
         <div class="glass-panel p-2.5 rounded-xl">
           <span class="text-[10px] font-bold text-slate-400 uppercase block">Bias State</span>
@@ -95,12 +94,12 @@
         <div class="glass-panel p-2.5 rounded-xl">
           <span class="text-[10px] font-bold text-slate-400 uppercase block">Market Sentiment</span>
           <div id="hud-sent" class="text-sm font-black text-emerald-400 mono mt-0.5">75% BUYERS</div>
-          <span class="text-[10px] text-slate-500">Bullish Orderflow</span>
+          <span class="text-[10px] text-slate-500">Orderflow Active</span>
         </div>
         <div class="glass-panel p-2.5 rounded-xl">
           <span class="text-[10px] font-bold text-slate-400 uppercase block">Chop Risk</span>
           <div id="hud-chop" class="text-sm font-black text-emerald-400 mono mt-0.5">LOW (SAFE)</div>
-          <span class="text-[10px] text-slate-500">Prime Momentum</span>
+          <span class="text-[10px] text-slate-500">Momentum Zone</span>
         </div>
       </div>
 
@@ -114,7 +113,7 @@
         <div class="py-4 text-center">
           <div id="sig-title" class="text-2xl sm:text-3xl font-black text-amber-400 mono">WAITING FOR 9 EMA DIP</div>
           <p id="sig-explanation" class="text-xs text-slate-300 max-w-md mx-auto mt-2 leading-relaxed">
-            Price VWAP ke upar hai. Badi candle ke piche daudne ke bajaye 9 EMA par 1-3 chhoti red candles ke test ka intezar karein.
+            Price VWAP ke upar hai. 9 EMA par 1-3 chhoti red candles ke test ka intezar karein. Badi breakout candle ke peeche na daudein.
           </p>
         </div>
 
@@ -134,21 +133,21 @@
           </div>
         </div>
 
-        <!-- WHATSAPP SHARE BUTTON -->
+        <!-- WHATSAPP SHARE -->
         <div class="pt-3">
-          <button onclick="shareViaWhatsApp()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+          <button onclick="shareViaWhatsApp()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition cursor-pointer">
             <i class="fa-brands fa-whatsapp text-lg"></i> Share Signal via WhatsApp
           </button>
         </div>
       </div>
 
-      <!-- LIVE CONTROLS & SIMULATOR -->
+      <!-- CONTROLS & TEST ENGINE -->
       <div class="glass-panel p-4 rounded-2xl space-y-3">
         <div class="flex justify-between items-center">
           <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400">
             <i class="fa-solid fa-sliders"></i> Live Parameters & Test Engine
           </h2>
-          <span class="text-[10px] text-slate-400">Changes auto-update</span>
+          <span class="text-[10px] text-slate-400">Auto-evaluates on input</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -165,7 +164,7 @@
             <input type="number" id="inp-ema" value="24545" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-400 mb-1">CANDLE TYPE</label>
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">CANDLE PATTERN</label>
             <select id="inp-candle" onchange="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold text-white outline-none">
               <option value="none">Normal Candle</option>
               <option value="hammer">Hammer (CE Trigger)</option>
@@ -198,7 +197,7 @@
           <button onclick="askAI('sl')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-emerald-300 hover:bg-slate-700 border border-white/10">Stop Loss Rules</button>
         </div>
         <div id="ai-response-box" class="bg-black/60 border border-white/10 rounded-xl p-3.5 text-xs text-slate-300 leading-relaxed min-h-[100px]">
-          Upar kisi bhi topic par tap karein ya live setup ka verdict paane ke liye query run karein.
+          Upar kisi bhi topic par tap karein ya query run karke setup verify karein.
         </div>
       </div>
     </div>
@@ -277,7 +276,7 @@
         </h2>
         <p class="text-slate-400">Apna daily generated Upstox Access Token daalein:</p>
         <input type="password" id="upstox-token" placeholder="Paste Access Token here" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2.5 mono text-white outline-none" />
-        <button onclick="saveToken()" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition">
+        <button onclick="saveToken()" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition cursor-pointer">
           Save & Connect Live Stream
         </button>
       </div>
@@ -290,7 +289,6 @@
     let simTimer = null;
     let currentSignalData = { status: 'WAIT', strike: '24550 CE', sl: '10 pts', t1: '20 pts', reason: '' };
 
-    // Real-Time Clock
     function updateClock() {
       const now = new Date();
       const el = document.getElementById('terminal-clock');
@@ -299,7 +297,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Tab Switching Function
     function switchView(tabId) {
       document.querySelectorAll('.view-tab').forEach(el => el.classList.add('hidden'));
       const activeEl = document.getElementById(tabId);
@@ -324,7 +321,6 @@
       }
     }
 
-    // Live Technical Signal Engine
     function evaluateSignal() {
       const spot = parseFloat(document.getElementById('inp-spot').value) || 0;
       const vwap = parseFloat(document.getElementById('inp-vwap').value) || 0;
@@ -380,7 +376,6 @@
         }
       }
 
-      // Update UI elements
       const hud = document.getElementById('signal-hud');
       hud.className = 'glass-panel p-4 rounded-2xl transition-all ' + css;
       document.getElementById('sig-phase-badge').innerText = phase;
@@ -397,7 +392,6 @@
       currentSignalData = { status, strike, sl, t1, reason, spot, vwap, ema };
     }
 
-    // WhatsApp Signal Share
     function shareViaWhatsApp() {
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const text = `🚨 *APEX TERMINAL TRADE SIGNAL (${time})* 🚨\n\n` +
@@ -411,7 +405,6 @@
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
     }
 
-    // Auto Simulator
     function toggleSimulator() {
       const btn = document.getElementById('btn-sim');
       if (simTimer) {
@@ -454,7 +447,6 @@
       evaluateSignal();
     }
 
-    // AI Queries
     function askAI(type) {
       const out = document.getElementById('ai-response-box');
       if(type === 'call') {
@@ -466,7 +458,6 @@
       }
     }
 
-    // Risk Calculator
     function runCalc() {
       const p = parseFloat(document.getElementById('calc-buy').value) || 0;
       const sl = parseFloat(document.getElementById('calc-sl').value) || 10;
@@ -485,7 +476,6 @@
       switchView('tab-scanner');
     }
 
-    // Run on Load
     evaluateSignal();
     runCalc();
   </script>
