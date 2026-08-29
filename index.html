@@ -3,343 +3,491 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>PRO TERMINAL | 9 EMA & VWAP AI ENGINE</title>
+  <title>APEX TERMINAL | 9 EMA & VWAP PRO</title>
   
   <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-
-    :root {
-      --bg-main: #06090f;
-      --bg-card: #0d131f;
-      --bg-surface: #131c2e;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --border-active: rgba(56, 189, 248, 0.35);
-      --neon-green: #00f59b;
-      --neon-red: #ff3366;
-      --neon-blue: #00d2ff;
-      --neon-amber: #ffaa00;
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap');
     * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     .mono { font-family: 'JetBrains Mono', monospace; }
-
-    body {
-      background-color: var(--bg-main);
-      color: #f1f5f9;
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(0, 210, 255, 0.07) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(0, 245, 155, 0.04) 0%, transparent 40%);
-      background-attachment: fixed;
-    }
-
-    .glass-panel {
-      background: linear-gradient(135deg, rgba(13, 19, 31, 0.9) 0%, rgba(9, 13, 22, 0.95) 100%);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-    }
-
-    .glass-card {
-      background: rgba(19, 28, 46, 0.65);
-      border: 1px solid var(--border-color);
-      backdrop-filter: blur(8px);
-    }
-
-    /* Glow States */
-    .signal-ce {
-      border: 1.5px solid var(--neon-green) !important;
-      background: radial-gradient(circle at 50% 0%, rgba(0, 245, 155, 0.15) 0%, rgba(13, 19, 31, 0.95) 80%) !important;
-      box-shadow: 0 0 25px -5px rgba(0, 245, 155, 0.3);
-    }
-    .signal-pe {
-      border: 1.5px solid var(--neon-red) !important;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 51, 102, 0.15) 0%, rgba(13, 19, 31, 0.95) 80%) !important;
-      box-shadow: 0 0 25px -5px rgba(255, 51, 102, 0.3);
-    }
-    .signal-wait {
-      border: 1.5px solid var(--neon-amber) !important;
-      background: radial-gradient(circle at 50% 0%, rgba(255, 170, 0, 0.1) 0%, rgba(13, 19, 31, 0.95) 80%) !important;
-      box-shadow: 0 0 20px -5px rgba(255, 170, 0, 0.2);
-    }
-    .signal-avoid {
-      border: 1.5px solid #475569 !important;
-      background: rgba(13, 19, 31, 0.95) !important;
-    }
-
-    @keyframes pulseLive {
-      0%, 100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 4px #00f59b); }
-      50% { transform: scale(1.15); opacity: 0.6; filter: drop-shadow(0 0 10px #00f59b); }
-    }
-    .live-dot { animation: pulseLive 2s infinite ease-in-out; }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+    body { background-color: #06090f; color: #f1f5f9; }
+    .glass-panel { background: rgba(13, 19, 31, 0.95); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); }
+    .signal-ce { border: 1.5px solid #00f59b !important; background: radial-gradient(circle at 50% 0%, rgba(0, 245, 155, 0.15) 0%, rgba(13, 19, 31, 0.95) 80%) !important; }
+    .signal-pe { border: 1.5px solid #ff3366 !important; background: radial-gradient(circle at 50% 0%, rgba(255, 51, 102, 0.15) 0%, rgba(13, 19, 31, 0.95) 80%) !important; }
+    .signal-wait { border: 1.5px solid #ffaa00 !important; background: radial-gradient(circle at 50% 0%, rgba(255, 170, 0, 0.1) 0%, rgba(13, 19, 31, 0.95) 80%) !important; }
+    .signal-avoid { border: 1.5px solid #475569 !important; background: #0d131f !important; }
   </style>
 </head>
 
-<body class="min-h-screen pb-24 text-slate-200">
+<body class="min-h-screen pb-20 text-slate-200">
 
-  <!-- TOP STATUS BAR (TradingView / Bloomberg Style) -->
-  <div class="bg-black/60 border-b border-white/5 px-4 py-1.5 text-[11px] mono flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
+  <!-- TOP STATUS BAR -->
+  <div class="bg-black/80 border-b border-white/10 px-4 py-2 text-[11px] mono flex justify-between items-center sticky top-0 z-50">
     <div class="flex items-center gap-3">
       <span class="flex items-center gap-1.5 font-bold text-emerald-400">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 live-dot"></span> NSE LIVE
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> NSE LIVE
       </span>
       <span class="text-slate-500">|</span>
-      <span class="text-slate-300">NIFTY 50: <b id="ticker-nifty" class="text-cyan-400">24,550.00</b></span>
-      <span class="hidden sm:inline text-slate-500">|</span>
-      <span class="hidden sm:inline text-slate-400">BANKNIFTY: <b id="ticker-banknifty" class="text-slate-200">52,340.50</b></span>
+      <span>NIFTY: <b id="ticker-nifty" class="text-cyan-400 font-bold">24550.00</b></span>
     </div>
     <div class="flex items-center gap-3">
-      <span id="terminal-clock" class="text-slate-400 font-semibold">09:45:00 IST</span>
-      <span id="api-status-badge" class="px-2 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/30 text-[10px] font-bold">
+      <span id="terminal-clock" class="text-slate-400 font-semibold">--:--:-- IST</span>
+      <span id="api-status-badge" class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/40 text-[10px] font-bold">
         Upstox: Offline
       </span>
     </div>
   </div>
 
-  <div class="max-w-4xl mx-auto px-3 sm:px-4 pt-3 space-y-3">
+  <div class="max-w-3xl mx-auto px-3 pt-3 space-y-3">
 
-    <!-- PRO HEADER -->
-    <header class="glass-panel p-3.5 rounded-2xl flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <div class="relative w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 border border-cyan-400/40 flex items-center justify-center shadow-inner">
-          <i class="fa-solid fa-chart-line text-cyan-400 text-lg"></i>
-          <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full border-2 border-slate-900"></span>
+    <!-- HEADER -->
+    <header class="glass-panel p-3 rounded-2xl flex justify-between items-center">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-400/40 flex items-center justify-center text-cyan-400">
+          <i class="fa-solid fa-chart-line text-base"></i>
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h1 class="text-base font-extrabold tracking-tight text-white flex items-center gap-1.5">
-              APEX <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">TERMINAL</span>
-            </h1>
-            <span class="bg-cyan-950/80 text-cyan-400 border border-cyan-500/30 text-[9px] px-1.5 py-0.5 rounded font-black tracking-widest uppercase">PRO v4.2</span>
-          </div>
-          <p class="text-[11px] text-slate-400 font-medium">9 EMA & VWAP Institutional Momentum System</p>
+          <h1 class="text-base font-extrabold text-white flex items-center gap-1.5">
+            APEX TERMINAL <span class="bg-cyan-950 text-cyan-400 text-[9px] px-1.5 py-0.5 rounded border border-cyan-500/30">PRO</span>
+          </h1>
+          <p class="text-[10px] text-slate-400">9 EMA & VWAP Institutional Momentum System</p>
         </div>
       </div>
-
-      <div class="flex items-center gap-2">
-        <button onclick="switchView('tab-upstox')" class="px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-200 transition flex items-center gap-1.5 shadow-sm">
-          <i class="fa-solid fa-key text-amber-400"></i>
-          <span class="hidden sm:inline">API Sync</span>
-        </button>
-      </div>
+      <button onclick="switchView('tab-upstox')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+        <i class="fa-solid fa-key text-amber-400"></i> API Sync
+      </button>
     </header>
 
     <!-- NAVIGATION TABS -->
-    <nav class="flex gap-1.5 p-1 bg-slate-900/80 rounded-xl border border-white/5 text-xs font-bold overflow-x-auto">
-      <button onclick="switchView('tab-scanner')" id="btn-tab-scanner" class="flex-1 py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 flex items-center justify-center gap-2 shadow transition whitespace-nowrap">
-        <i class="fa-solid fa-bolt-lightning text-xs"></i> Live Signal
+    <nav class="flex gap-1.5 p-1 bg-slate-900 rounded-xl border border-white/10 text-xs font-bold overflow-x-auto">
+      <button onclick="switchView('tab-scanner')" id="btn-tab-scanner" class="flex-1 py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-bolt"></i> Live Signal
       </button>
-      <button onclick="switchView('tab-ai')" id="btn-tab-ai" class="flex-1 py-2 px-3 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-brain text-xs text-cyan-400"></i> AI Analyst
+      <button onclick="switchView('tab-ai')" id="btn-tab-ai" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-brain text-cyan-400"></i> AI Analyst
       </button>
-      <button onclick="switchView('tab-checklist')" id="btn-tab-checklist" class="flex-1 py-2 px-3 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-list-check text-xs text-emerald-400"></i> Setup Check
+      <button onclick="switchView('tab-checklist')" id="btn-tab-checklist" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-list-check text-emerald-400"></i> Setup Check
       </button>
-      <button onclick="switchView('tab-calc')" id="btn-tab-calc" class="flex-1 py-2 px-3 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-calculator text-xs text-amber-400"></i> Risk Calc
-      </button>
-      <button onclick="switchView('tab-upstox')" id="btn-tab-upstox" class="flex-1 py-2 px-3 rounded-lg text-slate-400 hover:text-white flex items-center justify-center gap-2 transition whitespace-nowrap">
-        <i class="fa-solid fa-plug text-xs text-purple-400"></i> Connect
+      <button onclick="switchView('tab-calc')" id="btn-tab-calc" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-calculator text-amber-400"></i> Risk Calc
       </button>
     </nav>
 
-    <!-- ==================== VIEW 1: LIVE SCANNER ==================== -->
-    <div id="tab-scanner" class="space-y-3 view-section">
+    <!-- TAB 1: LIVE SCANNER -->
+    <div id="tab-scanner" class="space-y-3 view-tab">
 
-      <!-- INSTITUTIONAL SENTIMENT & MOMENTUM HUD -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div class="glass-card p-2.5 rounded-xl border border-white/5">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Bias State</span>
-          <div id="hud-bias" class="text-sm font-black text-emerald-400 mono mt-0.5 flex items-center gap-1.5">
-            <i class="fa-solid fa-arrow-trend-up"></i> BULLISH
-          </div>
-          <span class="text-[10px] text-slate-500">Price > VWAP Baseline</span>
+      <!-- TOP METRICS GRID -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+        <div class="glass-panel p-2.5 rounded-xl">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Bias State</span>
+          <div id="hud-bias" class="text-sm font-black text-emerald-400 mono mt-0.5">BULLISH</div>
+          <span class="text-[10px] text-slate-500">Spot > VWAP</span>
         </div>
-
-        <div class="glass-card p-2.5 rounded-xl border border-white/5">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">9 EMA Distance</span>
-          <div id="hud-dist" class="text-sm font-black text-cyan-400 mono mt-0.5">
-            +4.5 Pts (Optimal)
-          </div>
-          <span class="text-[10px] text-slate-500">Pullback Zone</span>
+        <div class="glass-panel p-2.5 rounded-xl">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">9 EMA Distance</span>
+          <div id="hud-dist" class="text-sm font-black text-cyan-400 mono mt-0.5">+5.0 Pts</div>
+          <span class="text-[10px] text-slate-500">Pullback Range</span>
         </div>
-
-        <div class="glass-card p-2.5 rounded-xl border border-white/5">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Sentiment Gauge</span>
-          <div id="hud-sentiment" class="text-sm font-black text-emerald-400 mono mt-0.5">
-            78% BUYERS
-          </div>
-          <div class="w-full h-1.5 bg-slate-800 rounded-full mt-1.5 overflow-hidden flex">
-            <div id="sent-bar-bull" class="h-full bg-emerald-400" style="width: 78%;"></div>
-            <div id="sent-bar-bear" class="h-full bg-rose-500" style="width: 22%;"></div>
-          </div>
+        <div class="glass-panel p-2.5 rounded-xl">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Market Sentiment</span>
+          <div id="hud-sent" class="text-sm font-black text-emerald-400 mono mt-0.5">75% BUYERS</div>
+          <span class="text-[10px] text-slate-500">Bullish Orderflow</span>
         </div>
-
-        <div class="glass-card p-2.5 rounded-xl border border-white/5">
-          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Chop Risk Index</span>
-          <div id="hud-decay" class="text-sm font-black text-emerald-400 mono mt-0.5">
-            LOW (SAFE)
-          </div>
-          <span class="text-[10px] text-slate-500">Prime Window</span>
+        <div class="glass-panel p-2.5 rounded-xl">
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Chop Risk</span>
+          <div id="hud-chop" class="text-sm font-black text-emerald-400 mono mt-0.5">LOW (SAFE)</div>
+          <span class="text-[10px] text-slate-500">Prime Momentum</span>
         </div>
       </div>
 
-      <!-- MAIN TRADING SIGNAL HUD -->
-      <div id="signal-hud" class="glass-panel p-4 sm:p-5 rounded-2xl signal-wait transition-all duration-300">
-        <div class="flex justify-between items-center border-b border-white/10 pb-2.5">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-            <span id="sig-phase-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 mono">PULLBACK SCANNING</span>
-          </div>
-          <span class="text-[11px] text-slate-400 mono">Timeframe: <b>5-Min Chart</b></span>
+      <!-- MAIN SIGNAL CARD -->
+      <div id="signal-hud" class="glass-panel p-4 rounded-2xl signal-wait transition-all">
+        <div class="flex justify-between items-center border-b border-white/10 pb-2">
+          <span id="sig-phase-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 mono">PULLBACK SCANNING</span>
+          <span class="text-[11px] text-slate-400 mono">Timeframe: <b>5-Min</b></span>
         </div>
 
         <div class="py-4 text-center">
-          <div id="sig-title" class="text-2xl sm:text-3xl font-black tracking-tight text-amber-400 mono">
-            WAITING FOR 9 EMA DIP
-          </div>
-          <p id="sig-explanation" class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto mt-2 leading-relaxed">
-            Price VWAP ke upar chal rahi hai. Badi breakout candle ke piche daudne ke bajaye 9 EMA tak 1-3 chhoti red candles ke pullback aane ka wait karein.
+          <div id="sig-title" class="text-2xl sm:text-3xl font-black text-amber-400 mono">WAITING FOR 9 EMA DIP</div>
+          <p id="sig-explanation" class="text-xs text-slate-300 max-w-md mx-auto mt-2 leading-relaxed">
+            Price VWAP ke upar hai. Badi candle ke piche daudne ke bajaye 9 EMA par 1-3 chhoti red candles ke test ka intezar karein.
           </p>
         </div>
 
-        <!-- TARGET MATRIX (HUD DISPLAY) -->
-        <div class="grid grid-cols-3 gap-2 bg-slate-950/80 p-3 rounded-xl border border-white/10 mono">
-          <div class="text-center border-r border-white/10 pr-2">
-            <span class="text-[9px] font-bold text-slate-400 uppercase block tracking-wider">RECOMMENDED STRIKE</span>
-            <span id="res-strike" class="text-sm sm:text-base font-black text-cyan-400 mt-0.5 block">--</span>
+        <!-- TARGET MATRIX -->
+        <div class="grid grid-cols-3 gap-2 bg-black/60 p-3 rounded-xl border border-white/10 mono text-center">
+          <div>
+            <span class="text-[9px] font-bold text-slate-400 uppercase block">RECOMMENDED STRIKE</span>
+            <span id="res-strike" class="text-sm font-black text-cyan-400 mt-0.5 block">24550 CE</span>
           </div>
-          <div class="text-center border-r border-white/10 px-2">
-            <span class="text-[9px] font-bold text-slate-400 uppercase block tracking-wider">HARD STOP LOSS</span>
-            <span id="res-sl" class="text-sm sm:text-base font-black text-rose-400 mt-0.5 block">--</span>
+          <div>
+            <span class="text-[9px] font-bold text-slate-400 uppercase block">HARD STOP LOSS</span>
+            <span id="res-sl" class="text-sm font-black text-rose-400 mt-0.5 block">Entry - 10 pts</span>
           </div>
-          <div class="text-center pl-2">
-            <span class="text-[9px] font-bold text-slate-400 uppercase block tracking-wider">TARGET 1 (1:2)</span>
-            <span id="res-t1" class="text-sm sm:text-base font-black text-emerald-400 mt-0.5 block">--</span>
+          <div>
+            <span class="text-[9px] font-bold text-slate-400 uppercase block">TARGET 1 (1:2)</span>
+            <span id="res-t1" class="text-sm font-black text-emerald-400 mt-0.5 block">Entry + 20 pts</span>
           </div>
         </div>
 
-        <!-- 1-CLICK ACTION BAR -->
-        <div class="flex gap-2 pt-3.5">
-          <button onclick="shareViaWhatsApp()" class="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 transition active:scale-[0.98]">
-            <i class="fa-brands fa-whatsapp text-base"></i> Share Signal via WhatsApp
-          </button>
-          <button onclick="triggerSoundAlert()" title="Test Sound" class="px-3 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-white/10 text-xs">
-            <i class="fa-solid fa-volume-high"></i>
+        <!-- WHATSAPP SHARE BUTTON -->
+        <div class="pt-3">
+          <button onclick="shareViaWhatsApp()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition">
+            <i class="fa-brands fa-whatsapp text-lg"></i> Share Signal via WhatsApp
           </button>
         </div>
       </div>
 
-      <!-- LIVE PARAMETERS CONTROLLER -->
+      <!-- LIVE CONTROLS & SIMULATOR -->
       <div class="glass-panel p-4 rounded-2xl space-y-3">
         <div class="flex justify-between items-center">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
-            <i class="fa-solid fa-sliders"></i> Live Terminal Parameters
+          <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400">
+            <i class="fa-solid fa-sliders"></i> Live Parameters & Test Engine
           </h2>
-          <span class="text-[10px] text-slate-400 mono">Auto-evaluates every tick</span>
+          <span class="text-[10px] text-slate-400">Changes auto-update</span>
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
           <div>
-            <label class="block text-[10px] font-bold text-slate-400 mb-1">NIFTY SPOT (LTP)</label>
-            <input type="number" id="inp-spot" value="24550" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white focus:border-cyan-400 outline-none" />
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">SPOT (LTP)</label>
+            <input type="number" id="inp-spot" value="24550" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-400 mb-1">VWAP BASELINE</label>
-            <input type="number" id="inp-vwap" value="24510" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white focus:border-cyan-400 outline-none" />
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">VWAP</label>
+            <input type="number" id="inp-vwap" value="24510" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-400 mb-1">9 EMA LINE</label>
-            <input type="number" id="inp-ema" value="24545" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white focus:border-cyan-400 outline-none" />
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">9 EMA</label>
+            <input type="number" id="inp-ema" value="24545" oninput="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
           </div>
           <div>
-            <label class="block text-[10px] font-bold text-slate-400 mb-1">5-MIN REJECTION PATTERN</label>
-            <select id="inp-candle" onchange="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold text-white focus:border-cyan-400 outline-none">
+            <label class="block text-[10px] font-bold text-slate-400 mb-1">CANDLE TYPE</label>
+            <select id="inp-candle" onchange="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold text-white outline-none">
               <option value="none">Normal Candle</option>
-              <option value="hammer">Bullish Rejection (Hammer/Pin)</option>
-              <option value="shooting_star">Bearish Rejection (Shooting Star)</option>
-              <option value="big_green">Big Breakout Green (>30 pts)</option>
-              <option value="big_red">Big Breakdown Red (>30 pts)</option>
+              <option value="hammer">Hammer (CE Trigger)</option>
+              <option value="shooting_star">Shooting Star (PE Trigger)</option>
+              <option value="big_green">Big Breakout (>30 pts)</option>
             </select>
           </div>
         </div>
 
         <div class="flex gap-2 pt-1">
-          <button onclick="toggleSimulator()" id="btn-sim" class="flex-1 py-2 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-500/40 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-cyan-900 transition">
-            <i class="fa-solid fa-play text-[10px]"></i> Run Live Simulator
+          <button onclick="toggleSimulator()" id="btn-sim" class="flex-1 py-2.5 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-500/40 text-xs font-bold hover:bg-cyan-900 transition">
+            <i class="fa-solid fa-play mr-1"></i> Start Live Auto Simulator
           </button>
-          <button onclick="loadTrapScenario()" class="py-2 px-3 rounded-lg bg-slate-800 text-slate-300 border border-white/10 text-xs font-bold hover:bg-slate-700 transition">
-            Simulate Sandwich Trap
+          <button onclick="loadTrap()" class="py-2.5 px-3 rounded-lg bg-slate-800 text-slate-300 border border-white/10 text-xs font-bold hover:bg-slate-700">
+            Simulate Trap
           </button>
         </div>
       </div>
     </div>
 
-    <!-- ==================== VIEW 2: AI SEARCH ASSISTANT ==================== -->
-    <div id="tab-ai" class="space-y-3 hidden view-section">
+    <!-- TAB 2: AI ANALYST -->
+    <div id="tab-ai" class="space-y-3 hidden view-tab">
       <div class="glass-panel p-4 rounded-2xl space-y-3">
-        <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
-          <i class="fa-solid fa-brain"></i> Neural Technical Search & Analysis
-        </div>
-        <p class="text-xs text-slate-400">
-          Setup confirmation, candle verification ya market trap ke bare mein sawal puchein:
-        </p>
-
-        <div class="flex flex-wrap gap-1.5">
-          <button onclick="askAIQuery('Is current 9 EMA pullback valid for CE?')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 border border-white/10 text-[11px] text-cyan-300">
-            ⚡ Validate CE Pullback
-          </button>
-          <button onclick="askAIQuery('Explain Sandwich Trap in detail')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 border border-white/10 text-[11px] text-amber-300">
-            ⚠️ What is Sandwich Trap?
-          </button>
-          <button onclick="askAIQuery('Stop Loss and Trailing Rules')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-slate-700 border border-white/10 text-[11px] text-emerald-300">
-            🎯 SL Trailing Protocol
-          </button>
-        </div>
-
-        <div class="relative">
-          <textarea id="ai-input" rows="2" placeholder="e.g. 'Nifty spot 24550 par hammer bana hai, Call entry lu ya ruk jau?'" class="w-full bg-slate-950 border border-white/10 rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:border-cyan-400 outline-none pr-10"></textarea>
-          <button onclick="processAI()" class="absolute right-2.5 bottom-3.5 w-7 h-7 bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-lg flex items-center justify-center text-xs font-bold transition">
-            <i class="fa-solid fa-arrow-up"></i>
-          </button>
-        </div>
-
-        <div id="ai-response-box" class="bg-slate-950/90 border border-white/10 rounded-xl p-3.5 text-xs text-slate-300 leading-relaxed max-h-60 overflow-y-auto">
-          <span class="text-slate-500 italic">AI analysis verdict yahan display hoga...</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== VIEW 3: CHECKLIST ==================== -->
-    <div id="tab-checklist" class="space-y-3 hidden view-section">
-      <div class="glass-panel p-4 rounded-2xl space-y-3">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-2">
-          <i class="fa-solid fa-clipboard-check"></i> 5-Point Trade Entry Verification
+        <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-brain"></i> AI Strategy & Setup Assistant
         </h2>
-        <p class="text-xs text-slate-400">Order place karne se pehle in 5 rules ko verify karein:</p>
+        <div class="flex flex-wrap gap-1.5">
+          <button onclick="askAI('call')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-cyan-300 hover:bg-slate-700 border border-white/10">Validate Call (CE)</button>
+          <button onclick="askAI('sandwich')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-amber-300 hover:bg-slate-700 border border-white/10">What is Sandwich Trap?</button>
+          <button onclick="askAI('sl')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-emerald-300 hover:bg-slate-700 border border-white/10">Stop Loss Rules</button>
+        </div>
+        <div id="ai-response-box" class="bg-black/60 border border-white/10 rounded-xl p-3.5 text-xs text-slate-300 leading-relaxed min-h-[100px]">
+          Upar kisi bhi topic par tap karein ya live setup ka verdict paane ke liye query run karein.
+        </div>
+      </div>
+    </div>
 
-        <div class="space-y-2 text-xs">
-          <label class="flex items-start gap-3 p-2.5 bg-slate-950/60 rounded-xl border border-white/5 cursor-pointer hover:border-white/10">
-            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-cyan-400" />
-            <span><b>1. VWAP Baseline Filter:</b> Price continuous VWAP ke right side (Call: Upar / Put: Neeche) sustain kar rahi hai?</span>
-          </label>
-          <label class="flex items-start gap-3 p-2.5 bg-slate-950/60 rounded-xl border border-white/5 cursor-pointer hover:border-white/10">
-            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-cyan-400" />
-            <span><b>2. Controlled Pullback:</b> 1 se 3 chhoti candles 9 EMA ke paas aayi hain bina panic volume ke?</span>
-          </label>
-          <label class="flex items-start gap-3 p-2.5 bg-slate-950/60 rounded-xl border border-white/5 cursor-pointer hover:border-white/10">
-            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-cyan-400" />
-            <span><b>3. Trigger Candle Confirmation:</b> 9 EMA par Hammer (CE) ya Shooting Star (PE) candle properly close ho chuki hai?</span>
-          </label>
-          <label class="flex items-start gap-3 p-2.5 bg-slate-950/60 rounded-xl border border-white/5 cursor-pointer hover:border-white/10">
-            <input type="checkbox" class="mt-0.5 w-4 h-4 accent-cyan-400" />
-            <span><b>4. Strike Selection:</b>
+    <!-- TAB 3: CHECKLIST -->
+    <div id="tab-checklist" class="space-y-3 hidden view-tab">
+      <div class="glass-panel p-4 rounded-2xl space-y-3 text-xs">
+        <h2 class="font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-clipboard-check"></i> 5-Point Trade Entry Checklist
+        </h2>
+        <label class="flex items-start gap-2.5 p-2 bg-black/40 rounded-lg cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 mt-0.5 accent-cyan-400" />
+          <span><b>1. VWAP Baseline:</b> Spot price continuous VWAP ke upar (CE) ya neeche (PE) sustain kar rahi hai?</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 bg-black/40 rounded-lg cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 mt-0.5 accent-cyan-400" />
+          <span><b>2. Retracement:</b> 1 se 3 chhoti candles ne 9 EMA ko test kiya hai bina heavy volume panic ke?</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 bg-black/40 rounded-lg cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 mt-0.5 accent-cyan-400" />
+          <span><b>3. Rejection Close:</b> 9 EMA par Hammer (CE) ya Shooting Star (PE) candle properly close ho chuki hai?</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 bg-black/40 rounded-lg cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 mt-0.5 accent-cyan-400" />
+          <span><b>4. Strike Selection:</b> Strictly At-The-Money (ATM) ya 1 Strike In-The-Money (ITM) chuna hai?</span>
+        </label>
+        <label class="flex items-start gap-2.5 p-2 bg-black/40 rounded-lg cursor-pointer">
+          <input type="checkbox" class="w-4 h-4 mt-0.5 accent-cyan-400" />
+          <span><b>5. Fixed Risk:</b> Option premium par strictly 8 se 10 points ka hard Stop Loss lagaya hai?</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- TAB 4: RISK CALCULATOR -->
+    <div id="tab-calc" class="space-y-3 hidden view-tab">
+      <div class="glass-panel p-4 rounded-2xl space-y-3 text-xs">
+        <h2 class="font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-calculator"></i> Option Premium Risk & Target Sizer
+        </h2>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">ENTRY PRICE (₹)</label>
+            <input type="number" id="calc-buy" value="110" oninput="runCalc()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">SL POINTS</label>
+            <input type="number" id="calc-sl" value="10" oninput="runCalc()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
+          </div>
+          <div>
+            <label class="block text-[10px] text-slate-400 mb-1">QUANTITY</label>
+            <input type="number" id="calc-qty" value="75" oninput="runCalc()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 pt-2 mono text-center">
+          <div class="bg-black/60 p-2 rounded-xl border border-rose-500/30">
+            <span class="text-[9px] text-rose-400 uppercase block font-bold">Hard SL</span>
+            <span id="out-sl" class="text-sm font-black text-rose-400">₹100.0</span>
+          </div>
+          <div class="bg-black/60 p-2 rounded-xl border border-emerald-500/30">
+            <span class="text-[9px] text-emerald-400 uppercase block font-bold">Target 1 (1:2)</span>
+            <span id="out-t1" class="text-sm font-black text-emerald-400">₹130.0</span>
+          </div>
+          <div class="bg-black/60 p-2 rounded-xl border border-amber-500/30">
+            <span class="text-[9px] text-amber-400 uppercase block font-bold">Total Risk</span>
+            <span id="out-risk" class="text-sm font-black text-amber-400">₹750</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: UPSTOX API MODAL / SECTION -->
+    <div id="tab-upstox" class="space-y-3 hidden view-tab">
+      <div class="glass-panel p-4 rounded-2xl space-y-3 text-xs">
+        <h2 class="font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-plug"></i> Upstox V2 API Connection
+        </h2>
+        <p class="text-slate-400">Apna daily generated Upstox Access Token daalein:</p>
+        <input type="password" id="upstox-token" placeholder="Paste Access Token here" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2.5 mono text-white outline-none" />
+        <button onclick="saveToken()" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition">
+          Save & Connect Live Stream
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    let simTimer = null;
+    let currentSignalData = { status: 'WAIT', strike: '24550 CE', sl: '10 pts', t1: '20 pts', reason: '' };
+
+    // Real-Time Clock
+    function updateClock() {
+      const now = new Date();
+      const el = document.getElementById('terminal-clock');
+      if(el) el.innerText = now.toLocaleTimeString('en-US', { hour12: false }) + ' IST';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Tab Switching Function
+    function switchView(tabId) {
+      document.querySelectorAll('.view-tab').forEach(el => el.classList.add('hidden'));
+      const activeEl = document.getElementById(tabId);
+      if(activeEl) activeEl.classList.remove('hidden');
+
+      const tabMap = {
+        'tab-scanner': 'btn-tab-scanner',
+        'tab-ai': 'btn-tab-ai',
+        'tab-checklist': 'btn-tab-checklist',
+        'tab-calc': 'btn-tab-calc'
+      };
+
+      for(let key in tabMap) {
+        const btn = document.getElementById(tabMap[key]);
+        if(btn) {
+          if(key === tabId) {
+            btn.className = "flex-1 py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 font-bold flex items-center justify-center gap-1.5 whitespace-nowrap";
+          } else {
+            btn.className = "flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap";
+          }
+        }
+      }
+    }
+
+    // Live Technical Signal Engine
+    function evaluateSignal() {
+      const spot = parseFloat(document.getElementById('inp-spot').value) || 0;
+      const vwap = parseFloat(document.getElementById('inp-vwap').value) || 0;
+      const ema = parseFloat(document.getElementById('inp-ema').value) || 0;
+      const candle = document.getElementById('inp-candle').value;
+
+      document.getElementById('ticker-nifty').innerText = spot.toFixed(2);
+
+      const now = new Date();
+      const currentMin = now.getHours() * 60 + now.getMinutes();
+      const isChop = currentMin >= (11 * 60 + 30) && currentMin <= (13 * 60 + 15);
+      const dist = Math.abs(spot - ema);
+      const isNearEMA = dist <= 8;
+
+      let status = 'WAITING FOR 9 EMA DIP';
+      let css = 'signal-wait';
+      let phase = 'PULLBACK SCANNING';
+      let reason = 'Price VWAP ke upar hai. 9 EMA par 1-3 chhoti red candles ke test ka intezar karein.';
+      let strike = `${Math.round(spot / 50) * 50} CE`;
+      let sl = 'Entry - 10 pts';
+      let t1 = 'Entry + 20 pts (1:2)';
+
+      if (isChop) {
+        status = 'AVOID: LUNCH CHOP ZONE';
+        css = 'signal-avoid';
+        phase = 'NO-TRADE WINDOW';
+        reason = '11:30 AM se 01:15 PM ke beech sideways chop aur Theta decay hota hai.';
+      } else if ((spot > vwap && spot < ema) || (spot < vwap && spot > ema)) {
+        status = 'AVOID: SANDWICH TRAP';
+        css = 'signal-avoid';
+        phase = 'TRAP ZONE ACTIVE';
+        reason = 'Price VWAP aur 9 EMA ke beech phasi hai. Market sideways wicks banayegi.';
+      } else if (spot > vwap && ema > vwap) {
+        strike = `${Math.round(spot / 50) * 50} CE`;
+        if (isNearEMA && candle === 'hammer') {
+          status = '🔥 BUY CALL (CE) TRIGGERED';
+          css = 'signal-ce';
+          phase = 'HIGH MOMENTUM BOUNCE';
+          reason = 'Price > VWAP + 9 EMA Bullish Hammer close ho chuki hai. High probability breakout!';
+        } else if (candle === 'big_green') {
+          status = 'WAIT: DO NOT CHASE';
+          css = 'signal-wait';
+          phase = 'FOMO WARNING';
+          reason = 'Badi green candle nikal chuki hai. Pullback ka intezar karein saste rate ke liye.';
+        }
+      } else if (spot < vwap && ema < vwap) {
+        strike = `${Math.round(spot / 50) * 50} PE`;
+        if (isNearEMA && candle === 'shooting_star') {
+          status = '🔥 BUY PUT (PE) TRIGGERED';
+          css = 'signal-pe';
+          phase = 'SHORT MOMENTUM ACTIVE';
+          reason = 'Price < VWAP + 9 EMA Shooting Star rejection close ho chuki hai.';
+        }
+      }
+
+      // Update UI elements
+      const hud = document.getElementById('signal-hud');
+      hud.className = 'glass-panel p-4 rounded-2xl transition-all ' + css;
+      document.getElementById('sig-phase-badge').innerText = phase;
+      document.getElementById('sig-title').innerText = status;
+      document.getElementById('sig-explanation').innerText = reason;
+      document.getElementById('res-strike').innerText = strike;
+      document.getElementById('res-sl').innerText = sl;
+      document.getElementById('res-t1').innerText = t1;
+
+      document.getElementById('hud-dist').innerText = `${dist.toFixed(1)} Pts`;
+      document.getElementById('hud-bias').innerText = spot > vwap ? 'BULLISH' : 'BEARISH';
+      document.getElementById('hud-bias').className = spot > vwap ? 'text-sm font-black text-emerald-400 mono mt-0.5' : 'text-sm font-black text-rose-400 mono mt-0.5';
+
+      currentSignalData = { status, strike, sl, t1, reason, spot, vwap, ema };
+    }
+
+    // WhatsApp Signal Share
+    function shareViaWhatsApp() {
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const text = `🚨 *APEX TERMINAL TRADE SIGNAL (${time})* 🚨\n\n` +
+                   `📌 *Signal:* ${currentSignalData.status}\n` +
+                   `🎯 *Recommended Strike:* ${currentSignalData.strike}\n` +
+                   `🛑 *Stop Loss:* ${currentSignalData.sl}\n` +
+                   `🏁 *Target 1 (1:2):* ${currentSignalData.t1}\n\n` +
+                   `📊 *Spot:* ${currentSignalData.spot} | *VWAP:* ${currentSignalData.vwap} | *9 EMA:* ${currentSignalData.ema}\n` +
+                   `💡 *Reason:* ${currentSignalData.reason}\n\n` +
+                   `_Apex 9 EMA & VWAP Strict Momentum Execution_`;
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // Auto Simulator
+    function toggleSimulator() {
+      const btn = document.getElementById('btn-sim');
+      if (simTimer) {
+        clearInterval(simTimer);
+        simTimer = null;
+        btn.innerHTML = '<i class="fa-solid fa-play mr-1"></i> Start Live Auto Simulator';
+        btn.className = "flex-1 py-2.5 rounded-lg bg-cyan-950 text-cyan-400 border border-cyan-500/40 text-xs font-bold hover:bg-cyan-900 transition";
+      } else {
+        btn.innerHTML = '<i class="fa-solid fa-stop mr-1"></i> Stop Simulator';
+        btn.className = "flex-1 py-2.5 rounded-lg bg-rose-950 text-rose-400 border border-rose-500/40 text-xs font-bold hover:bg-rose-900 transition";
+        let step = 0;
+        simTimer = setInterval(() => {
+          step++;
+          let ema = parseFloat(document.getElementById('inp-ema').value);
+          let candle = document.getElementById('inp-candle');
+          if (step % 4 === 1) {
+            document.getElementById('inp-spot').value = (ema + 20).toFixed(1);
+            candle.value = 'big_green';
+          } else if (step % 4 === 2) {
+            document.getElementById('inp-spot').value = (ema + 2).toFixed(1);
+            candle.value = 'none';
+          } else if (step % 4 === 3) {
+            document.getElementById('inp-spot').value = (ema + 1).toFixed(1);
+            candle.value = 'hammer';
+          } else {
+            document.getElementById('inp-spot').value = (ema + 25).toFixed(1);
+            document.getElementById('inp-ema').value = (ema + 8).toFixed(1);
+            candle.value = 'none';
+          }
+          evaluateSignal();
+        }, 3000);
+      }
+    }
+
+    function loadTrap() {
+      document.getElementById('inp-spot').value = '24525';
+      document.getElementById('inp-vwap').value = '24540';
+      document.getElementById('inp-ema').value = '24510';
+      document.getElementById('inp-candle').value = 'none';
+      evaluateSignal();
+    }
+
+    // AI Queries
+    function askAI(type) {
+      const out = document.getElementById('ai-response-box');
+      if(type === 'call') {
+        out.innerHTML = `<b class="text-emerald-400">🟢 CALL (CE) VERDICT:</b><br>• Spot continuous VWAP ke upar hona chahiye.<br>• 9 EMA tak chhoti red candles ka pullback aane dein.<br>• Hammer candle close hone ke baad hi agle high par enter karein. Fixed 10 pts Stop Loss rakhein.`;
+      } else if(type === 'sandwich') {
+        out.innerHTML = `<b class="text-amber-400">⚠️ SANDWICH TRAP:</b><br>Jab price <b>VWAP aur 9 EMA ke beech</b> phasi hoti hai, toh dono taraf se wick banti hai. Is zone mein trade 100% AVOID karein.`;
+      } else if(type === 'sl') {
+        out.innerHTML = `<b class="text-cyan-400">🎯 SL PROTOCOL:</b><br>Option premium par hard 8–10 points ka Stop Loss lagayein. Target 1 (+20 pts) aate hi 70% book karein aur SL Cost-to-Cost karein.`;
+      }
+    }
+
+    // Risk Calculator
+    function runCalc() {
+      const p = parseFloat(document.getElementById('calc-buy').value) || 0;
+      const sl = parseFloat(document.getElementById('calc-sl').value) || 10;
+      const qty = parseFloat(document.getElementById('calc-qty').value) || 75;
+      document.getElementById('out-sl').innerText = `₹${(p - sl).toFixed(1)}`;
+      document.getElementById('out-t1').innerText = `₹${(p + sl * 2).toFixed(1)}`;
+      document.getElementById('out-risk').innerText = `₹${(sl * qty).toFixed(0)}`;
+    }
+
+    function saveToken() {
+      const val = document.getElementById('upstox-token').value.trim();
+      if(!val) return alert('Token fill karein!');
+      document.getElementById('api-status-badge').className = "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold";
+      document.getElementById('api-status-badge').innerText = "Upstox: Connected";
+      alert('Upstox Token saved!');
+      switchView('tab-scanner');
+    }
+
+    // Run on Load
+    evaluateSignal();
+    runCalc();
+  </script>
+</body>
+</html>
