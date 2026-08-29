@@ -3,11 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>APEX TERMINAL | 9 EMA, VWAP, OI & VIX CONFLUENCE PRO</title>
+  <title>APEX TERMINAL | 9 EMA, VWAP, OI, VIX & DISCIPLINE PRO</title>
   
   <!-- Tailwind CSS & Font Awesome -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- TradingView Official Library -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
@@ -23,9 +25,9 @@
   </style>
 </head>
 
-<body class="min-h-screen pb-20 text-slate-200">
+<body class="min-h-screen pb-24 text-slate-200">
 
-  <!-- TOP GLOBAL TICKER (Bloomberg / Institutional Style) -->
+  <!-- TOP GLOBAL TICKER -->
   <div class="bg-black/90 border-b border-white/10 px-3 py-1.5 text-[11px] mono flex justify-between items-center sticky top-0 z-50 overflow-x-auto gap-3">
     <div class="flex items-center gap-3 whitespace-nowrap">
       <span class="flex items-center gap-1 font-bold text-emerald-400">
@@ -56,9 +58,9 @@
         </div>
         <div>
           <h1 class="text-base font-extrabold text-white flex items-center gap-1.5">
-            APEX TERMINAL <span class="bg-cyan-950 text-cyan-400 text-[9px] px-1.5 py-0.5 rounded border border-cyan-500/30">OI & CONFLUENCE PRO</span>
+            APEX TERMINAL <span class="bg-cyan-950 text-cyan-400 text-[9px] px-1.5 py-0.5 rounded border border-cyan-500/30">PRO V5</span>
           </h1>
-          <p class="text-[10px] text-slate-400">9 EMA + VWAP + Live Open Interest + VIX Engine</p>
+          <p class="text-[10px] text-slate-400">9 EMA + VWAP + OI Radar + Discipline System</p>
         </div>
       </div>
       <button onclick="switchView('tab-upstox')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-1.5">
@@ -71,42 +73,42 @@
       <button onclick="switchView('tab-scanner')" id="btn-tab-scanner" class="flex-1 py-2 px-3 rounded-lg bg-cyan-500 text-slate-950 flex items-center justify-center gap-1.5 whitespace-nowrap">
         <i class="fa-solid fa-bolt"></i> Live Signal
       </button>
-      <button onclick="switchView('tab-oi')" id="btn-tab-oi" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
-        <i class="fa-solid fa-database text-amber-400"></i> OI & VIX Data
-      </button>
       <button onclick="switchView('tab-chart')" id="btn-tab-chart" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
         <i class="fa-solid fa-chart-candlestick text-cyan-400"></i> Live Chart
+      </button>
+      <button onclick="switchView('tab-oi')" id="btn-tab-oi" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-database text-amber-400"></i> OI Radar
+      </button>
+      <button onclick="switchView('tab-learning')" id="btn-tab-learning" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
+        <i class="fa-solid fa-graduation-cap text-emerald-400"></i> Discipline
       </button>
       <button onclick="switchView('tab-pa')" id="btn-tab-pa" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
         <i class="fa-solid fa-cubes text-purple-400"></i> Price Action
       </button>
-      <button onclick="switchView('tab-ai')" id="btn-tab-ai" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
-        <i class="fa-solid fa-brain text-cyan-400"></i> AI Analyst
-      </button>
       <button onclick="switchView('tab-calc')" id="btn-tab-calc" class="flex-1 py-2 px-3 rounded-lg text-slate-400 flex items-center justify-center gap-1.5 whitespace-nowrap">
-        <i class="fa-solid fa-calculator text-emerald-400"></i> Risk Calc
+        <i class="fa-solid fa-calculator text-rose-400"></i> Sizer
       </button>
     </nav>
 
     <!-- ==================== TAB 1: LIVE SCANNER ==================== -->
     <div id="tab-scanner" class="space-y-3 view-tab">
 
-      <!-- INSTITUTIONAL PULSE MATRIX -->
+      <!-- TOP METRICS -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
         <div class="glass-panel p-2.5 rounded-xl">
-          <span class="text-[10px] font-bold text-slate-400 uppercase block">Confluence Accuracy</span>
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">Accuracy Confluence</span>
           <div id="hud-acc" class="text-sm font-black text-emerald-400 mono mt-0.5">85% HIGH</div>
-          <span class="text-[10px] text-slate-500">Technical + OI Sync</span>
+          <span class="text-[10px] text-slate-500">Tech + OI Aligned</span>
         </div>
         <div class="glass-panel p-2.5 rounded-xl">
-          <span class="text-[10px] font-bold text-slate-400 uppercase block">Put-Call Ratio (PCR)</span>
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">PCR (Put-Call Ratio)</span>
           <div id="hud-pcr" class="text-sm font-black text-emerald-400 mono mt-0.5">1.18 (BULLISH)</div>
-          <span class="text-[10px] text-slate-500">Put Writing Dominant</span>
+          <span class="text-[10px] text-slate-500">Put Writing Active</span>
         </div>
         <div class="glass-panel p-2.5 rounded-xl">
-          <span class="text-[10px] font-bold text-slate-400 uppercase block">India VIX Zone</span>
+          <span class="text-[10px] font-bold text-slate-400 uppercase block">India VIX Filter</span>
           <div id="hud-vix" class="text-sm font-black text-cyan-400 mono mt-0.5">13.65 (OPTIMAL)</div>
-          <span class="text-[10px] text-slate-500">Low Decay Risk</span>
+          <span class="text-[10px] text-slate-500">Normal Theta Speed</span>
         </div>
         <div class="glass-panel p-2.5 rounded-xl">
           <span class="text-[10px] font-bold text-slate-400 uppercase block">GIFT Nifty Cue</span>
@@ -115,40 +117,58 @@
         </div>
       </div>
 
-      <!-- MAIN TRADING SIGNAL HUD -->
+      <!-- MAIN SIGNAL HUD -->
       <div id="signal-hud" class="glass-panel p-4 rounded-2xl signal-wait transition-all">
         <div class="flex justify-between items-center border-b border-white/10 pb-2">
           <span id="sig-phase-badge" class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 mono">PULLBACK SCANNING</span>
-          <span class="text-[11px] text-slate-400 mono">Timeframe: <b>5-Min Setup</b></span>
+          <span class="text-[11px] text-slate-400 mono">Timeframe: <b>5-Min Index</b></span>
         </div>
 
-        <div class="py-4 text-center">
+        <div class="py-3 text-center">
           <div id="sig-title" class="text-2xl sm:text-3xl font-black text-amber-400 mono">WAITING FOR 9 EMA DIP</div>
-          <p id="sig-explanation" class="text-xs text-slate-300 max-w-md mx-auto mt-2 leading-relaxed">
-            Price VWAP ke upar chal rahi hai aur PCR 1.18 Bullish hai. 9 EMA par 1-3 chhoti red candles ke test ka wait karein.
+          <p id="sig-explanation" class="text-xs text-slate-300 max-w-md mx-auto mt-1 leading-relaxed">
+            Spot VWAP ke upar hai. 9 EMA par 1-3 chhoti candles ke dip aur rejection candle banne ka wait karein.
           </p>
         </div>
 
-        <!-- TARGET MATRIX -->
-        <div class="grid grid-cols-3 gap-2 bg-black/60 p-3 rounded-xl border border-white/10 mono text-center">
-          <div>
-            <span class="text-[9px] font-bold text-slate-400 uppercase block">RECOMMENDED STRIKE</span>
-            <span id="res-strike" class="text-sm font-black text-cyan-400 mt-0.5 block">24550 CE</span>
+        <!-- ACTIONABLE PREMIUM VERDICT BOX -->
+        <div class="bg-black/70 p-3.5 rounded-xl border border-white/10 space-y-2 mt-2">
+          <div class="flex justify-between items-center border-b border-white/10 pb-1.5">
+            <span class="text-[10px] font-black uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+              <i class="fa-solid fa-stamp text-amber-400"></i> Actionable Premium Verdict
+            </span>
+            <span id="verdict-action-badge" class="text-[10px] font-black px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/40">
+              WAIT / NO TRADE
+            </span>
           </div>
-          <div>
-            <span class="text-[9px] font-bold text-slate-400 uppercase block">HARD STOP LOSS</span>
-            <span id="res-sl" class="text-sm font-black text-rose-400 mt-0.5 block">Entry - 10 pts</span>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs mono pt-1">
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase block font-bold">Strike To Trade</span>
+              <span id="verdict-strike" class="text-sm font-black text-cyan-400">24550 CE</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase block font-bold">Ideal Premium</span>
+              <span id="verdict-premium" class="text-sm font-black text-white">₹110 – ₹125</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase block font-bold">Hard System SL</span>
+              <span id="verdict-sl" class="text-sm font-black text-rose-400">₹100 (10 pts)</span>
+            </div>
+            <div>
+              <span class="text-[9px] text-slate-400 uppercase block font-bold">1:2 Target (70%)</span>
+              <span id="verdict-target" class="text-sm font-black text-emerald-400">₹130 – ₹145</span>
+            </div>
           </div>
-          <div>
-            <span class="text-[9px] font-bold text-slate-400 uppercase block">TARGET 1 (1:2)</span>
-            <span id="res-t1" class="text-sm font-black text-emerald-400 mt-0.5 block">Entry + 20 pts</span>
-          </div>
+          <p id="verdict-advice" class="text-[11px] text-slate-400 italic pt-1 border-t border-white/5">
+            * Trigger candle ka high break hone par hi market order place karein. Pehle se jump na karein.
+          </p>
         </div>
 
-        <!-- WHATSAPP SHARE -->
+        <!-- WHATSAPP SHARE BUTTON -->
         <div class="pt-3">
           <button onclick="shareViaWhatsApp()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition cursor-pointer">
-            <i class="fa-brands fa-whatsapp text-lg"></i> Share Complete Signal via WhatsApp
+            <i class="fa-brands fa-whatsapp text-lg"></i> Share Complete Verdict on WhatsApp
           </button>
         </div>
       </div>
@@ -179,10 +199,10 @@
             <label class="block text-[10px] font-bold text-slate-400 mb-1">CANDLE PATTERN</label>
             <select id="inp-candle" onchange="evaluateSignal()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold text-white outline-none focus:border-cyan-400">
               <option value="none">Normal Candle</option>
-              <option value="hammer">Hammer / Pin-bar (CE)</option>
-              <option value="shooting_star">Shooting Star (PE)</option>
-              <option value="big_green">Big Breakout (>30 pts)</option>
-              <option value="big_red">Big Breakdown (>30 pts)</option>
+              <option value="hammer">Hammer / Pin-bar (CE Trigger)</option>
+              <option value="shooting_star">Shooting Star (PE Trigger)</option>
+              <option value="big_green">Big Breakout Candle (>30 pts)</option>
+              <option value="big_red">Big Breakdown Candle (>30 pts)</option>
             </select>
           </div>
         </div>
@@ -198,112 +218,21 @@
       </div>
     </div>
 
-    <!-- ==================== TAB 2: LIVE OI & VIX RADAR ==================== -->
-    <div id="tab-oi" class="space-y-3 hidden view-tab">
-      <div class="glass-panel p-4 rounded-2xl space-y-4">
-        
-        <div>
-          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center justify-between mb-2">
-            <span><i class="fa-solid fa-database mr-1"></i> Option Chain OI & Change in OI Radar</span>
-            <span class="text-[10px] text-slate-400 mono">Real-Time Strike Shift</span>
-          </h2>
-
-          <!-- PCR & TOTAL OI VISUAL BAR -->
-          <div class="bg-black/60 p-3 rounded-xl border border-white/10 space-y-2 text-xs">
-            <div class="flex justify-between font-bold mono text-[11px]">
-              <span class="text-rose-400">Total Call OI: <b id="oi-tot-ce">42.8 L</b></span>
-              <span class="text-slate-400">PCR: <b id="oi-pcr-val" class="text-emerald-400 text-sm">1.18</b></span>
-              <span class="text-emerald-400">Total Put OI: <b id="oi-tot-pe">50.5 L</b></span>
-            </div>
-            <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden flex">
-              <div id="oi-bar-ce" class="h-full bg-rose-500 transition-all" style="width: 46%;"></div>
-              <div id="oi-bar-pe" class="h-full bg-emerald-400 transition-all" style="width: 54%;"></div>
-            </div>
-            <div class="flex justify-between text-[10px] text-slate-500">
-              <span>Resistance Pressure (Call Writing)</span>
-              <span>Support Defense (Put Writing)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- STRIKE-BY-STRIKE OI & CHG IN OI TABLE -->
-        <div>
-          <h3 class="text-xs font-bold text-slate-300 mb-2 flex items-center gap-1.5">
-            <i class="fa-solid fa-table-columns text-cyan-400"></i> Key Strike Open Interest Distribution:
-          </h3>
-          <div class="overflow-x-auto">
-            <table class="w-full text-xs text-left mono">
-              <thead class="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-white/10">
-                <tr>
-                  <th class="p-2 text-rose-400">Call OI (Chg)</th>
-                  <th class="p-2 text-center text-white">Strike</th>
-                  <th class="p-2 text-right text-emerald-400">Put OI (Chg)</th>
-                  <th class="p-2 text-center text-cyan-400">Interpretation</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-white/5" id="oi-table-body">
-                <tr>
-                  <td class="p-2 text-rose-300">18.4 L (+2.8 L)</td>
-                  <td class="p-2 text-center font-bold text-white bg-slate-900/50">24600</td>
-                  <td class="p-2 text-right text-emerald-300">8.2 L (-1.1 L)</td>
-                  <td class="p-2 text-center text-rose-400 text-[10px]">Major Resistance</td>
-                </tr>
-                <tr class="bg-cyan-950/20">
-                  <td class="p-2 text-rose-300">12.1 L (-1.4 L)</td>
-                  <td class="p-2 text-center font-bold text-cyan-400 bg-slate-900/80">24550 (ATM)</td>
-                  <td class="p-2 text-right text-emerald-300">16.5 L (+4.2 L)</td>
-                  <td class="p-2 text-center text-emerald-400 text-[10px]">Bullish Shift (Call Unwind)</td>
-                </tr>
-                <tr>
-                  <td class="p-2 text-rose-300">6.5 L (-2.2 L)</td>
-                  <td class="p-2 text-center font-bold text-white bg-slate-900/50">24500</td>
-                  <td class="p-2 text-right text-emerald-300">22.8 L (+5.6 L)</td>
-                  <td class="p-2 text-center text-emerald-400 text-[10px]">Strong Support Wall</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- INDIA VIX & GIFT NIFTY METRIC CARDS -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-          <div class="p-3 bg-slate-950 rounded-xl border border-white/10 space-y-1">
-            <span class="font-bold text-amber-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-gauge-high"></i> India VIX Strategy Filter:
-            </span>
-            <p class="text-slate-300 text-[11px] leading-relaxed">
-              • <b>Current VIX:</b> <span id="vix-val" class="font-bold text-amber-400">13.65</span> (Low/Normal).
-              <br>• <b>Implication:</b> Premium decay normal hai. 8-10 points ka Stop Loss safe rahega. Agar VIX 17 cross kare toh SL 14-16 points karna padega.
-            </p>
-          </div>
-          <div class="p-3 bg-slate-950 rounded-xl border border-white/10 space-y-1">
-            <span class="font-bold text-emerald-400 flex items-center gap-1.5">
-              <i class="fa-solid fa-globe"></i> GIFT Nifty Global Momentum:
-            </span>
-            <p class="text-slate-300 text-[11px] leading-relaxed">
-              • <b>GIFT Nifty Spread:</b> <span id="gift-spread" class="font-bold text-emerald-400">+35 Points Premium</span>.
-              <br>• <b>Implication:</b> Institutional global bias positive hai. Dip buying (Pullback Call setups) ko maximum priority dein.
-            </p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ==================== TAB 3: LIVE CHART (TRADINGVIEW) ==================== -->
+    <!-- ==================== TAB 2: LIVE CHART (UNLOCKED NIFTY) ==================== -->
     <div id="tab-chart" class="space-y-3 hidden view-tab">
       <div class="glass-panel p-3 rounded-2xl">
         <div class="flex flex-wrap justify-between items-center pb-2 border-b border-white/10 mb-2 gap-2">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-xs font-bold text-white mono" id="chart-symbol-label">NIFTY 50 • 5M CANDLESTICK</span>
+            <span class="text-xs font-bold text-white mono" id="chart-symbol-label">NIFTY BEES (1:1 UNLOCKED NIFTY) • 5M</span>
           </div>
+          
           <div class="flex items-center gap-1.5 text-xs">
+            <button onclick="changeChartSymbol('NSE:NIFTYBEES', 'NIFTY BEES (1:1 NIFTY)')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold hover:bg-emerald-500/30 transition text-[11px]">
+              NIFTY ETF (Safe)
+            </button>
             <button onclick="changeChartSymbol('NSE:NIFTY', 'NIFTY 50 (SPOT)')" class="px-2.5 py-1 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold hover:bg-cyan-500/30 transition text-[11px]">
               NIFTY Spot
-            </button>
-            <button onclick="changeChartSymbol('NSE:NIFTYBEES', 'NIFTY BEES (UNLOCKED)')" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-bold hover:bg-emerald-500/30 transition text-[11px]">
-              NIFTY ETF
             </button>
             <button onclick="changeChartSymbol('NSE:BANKNIFTY', 'BANK NIFTY')" class="px-2.5 py-1 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold hover:bg-purple-500/30 transition text-[11px]">
               BANKNIFTY
@@ -311,18 +240,138 @@
           </div>
         </div>
 
-        <div id="tv-chart-box" class="w-full h-[500px] rounded-xl overflow-hidden border border-white/10 bg-slate-950">
-          <!-- Dynamically inserted TradingView iframe -->
+        <!-- TRADINGVIEW CONTAINER -->
+        <div id="tv-chart-box" class="w-full h-[520px] rounded-xl overflow-hidden border border-white/10 bg-slate-950">
+          <!-- Dynamically loaded -->
+        </div>
+
+        <div class="pt-2 text-[11px] text-slate-400 flex justify-between">
+          <span>* Tip: NIFTY ETF 1:1 Nifty Spot ke movement ko tick-by-tick mirror karta hai bina kisi symbol restriction ke.</span>
+          <a href="https://in.tradingview.com/chart/?symbol=NSE:NIFTY" target="_blank" class="text-cyan-400 hover:underline">Full Chart <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></a>
         </div>
       </div>
     </div>
 
-    <!-- ==================== TAB 4: PRICE ACTION ==================== -->
+    <!-- ==================== TAB 3: OI RADAR ==================== -->
+    <div id="tab-oi" class="space-y-3 hidden view-tab">
+      <div class="glass-panel p-4 rounded-2xl space-y-4">
+        <div>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center justify-between mb-2">
+            <span><i class="fa-solid fa-database mr-1"></i> Option Chain OI & Change in OI Radar</span>
+            <span class="text-[10px] text-slate-400 mono">Real-Time Strike Shift</span>
+          </h2>
+
+          <div class="bg-black/60 p-3 rounded-xl border border-white/10 space-y-2 text-xs">
+            <div class="flex justify-between font-bold mono text-[11px]">
+              <span class="text-rose-400">Total Call OI: 42.8 L</span>
+              <span class="text-slate-400">PCR: <b class="text-emerald-400 text-sm">1.18</b></span>
+              <span class="text-emerald-400">Total Put OI: 50.5 L</span>
+            </div>
+            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+              <div class="h-full bg-rose-500" style="width: 46%;"></div>
+              <div class="h-full bg-emerald-400" style="width: 54%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left mono">
+            <thead class="bg-slate-900 text-slate-400 text-[10px] uppercase border-b border-white/10">
+              <tr>
+                <th class="p-2 text-rose-400">Call OI (Chg)</th>
+                <th class="p-2 text-center text-white">Strike</th>
+                <th class="p-2 text-right text-emerald-400">Put OI (Chg)</th>
+                <th class="p-2 text-center text-cyan-400">Shift</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              <tr>
+                <td class="p-2 text-rose-300">18.4 L (+2.8 L)</td>
+                <td class="p-2 text-center font-bold text-white bg-slate-900/50">24600</td>
+                <td class="p-2 text-right text-emerald-300">8.2 L (-1.1 L)</td>
+                <td class="p-2 text-center text-rose-400 text-[10px]">Resistance Wall</td>
+              </tr>
+              <tr class="bg-cyan-950/30">
+                <td class="p-2 text-rose-300">12.1 L (-1.4 L)</td>
+                <td class="p-2 text-center font-bold text-cyan-400 bg-slate-900/80">24550 (ATM)</td>
+                <td class="p-2 text-right text-emerald-300">16.5 L (+4.2 L)</td>
+                <td class="p-2 text-center text-emerald-400 text-[10px]">Put Writing (Bullish)</td>
+              </tr>
+              <tr>
+                <td class="p-2 text-rose-300">6.5 L (-2.2 L)</td>
+                <td class="p-2 text-center font-bold text-white bg-slate-900/50">24500</td>
+                <td class="p-2 text-right text-emerald-300">22.8 L (+5.6 L)</td>
+                <td class="p-2 text-center text-emerald-400 text-[10px]">Major Support Base</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== TAB 4: LEARNING & DISCIPLINE HUB ==================== -->
+    <div id="tab-learning" class="space-y-3 hidden view-tab">
+      <div class="glass-panel p-4 rounded-2xl space-y-4 text-xs">
+        
+        <div class="border-b border-white/10 pb-2">
+          <h2 class="text-sm font-black uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+            <i class="fa-solid fa-graduation-cap text-base"></i> Institutional Discipline & Mindset Bible
+          </h2>
+          <p class="text-[11px] text-slate-400 mt-1">Option buying mein 90% traders strategy ki wajah se nahi, emotion aur indiscipline ki wajah se loss karte hain.</p>
+        </div>
+
+        <!-- 10 GOLDEN RULES FOR OPTION BUYERS -->
+        <div class="space-y-2.5">
+          <h3 class="font-bold text-amber-400 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-shield-halved"></i> 10 Golden Rules of Option Buying
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300">
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">1. Strictly ATM / Slight ITM Only</strong>
+              Saste OTM (Out-of-the-Money) premium lottery ticket hote hain. Hamesha 0.50 Delta wala ATM strike chunein.
+            </div>
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">2. Max 2 Trades Per Day</strong>
+              Overtrading option buyers ka sabse bada dushman hai. 2 trades ke baad market chahe jahan jaye, screen band karein.
+            </div>
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">3. Fixed 10-Point Hard Stop Loss</strong>
+              Dimag mein Stop Loss mat rakhein; terminal par system SL lagayein. 10 point se zyada ka risk option buyer ke liye zehar hai.
+            </div>
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">4. Respect 1:2 R:R Rule (70-30 Formula)</strong>
+              20 points (+1:2) aate hi 70% quantity lock karein aur baaki 30% ka SL cost-to-cost trail karein.
+            </div>
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">5. The Lunch Chop Trap (11:30 - 01:15)</strong>
+              Is waqt institutions lunch par hote hain aur Theta decay premiums ko kha jata hai. Fresh entry bilkul avoid karein.
+            </div>
+            <div class="p-2.5 bg-slate-900/90 rounded-xl border border-white/5 space-y-1">
+              <strong class="text-white block font-bold">6. Revenge Trading Kill-Switch</strong>
+              Agar subah ka trade Stop Loss hit kar de, toh gusse mein double quantity ke saath market se badla na lein.
+            </div>
+          </div>
+        </div>
+
+        <!-- RISK MANAGEMENT CARD -->
+        <div class="p-3.5 bg-gradient-to-br from-emerald-950/40 to-slate-900 rounded-xl border border-emerald-500/30 space-y-2">
+          <span class="text-xs font-black text-emerald-400 uppercase tracking-wide flex items-center gap-1.5">
+            <i class="fa-solid fa-scale-balanced"></i> Capital & Position Sizing Rule
+          </span>
+          <p class="text-slate-300 text-[11px] leading-relaxed">
+            Agar aapki kul trading capital ₹50,000 hai, toh <b>sirf 1 Lot (Nifty 75 Qty)</b> se trade karein. Har trade mein aapka maximum loss ₹750 (10 pts) se zyada nahi hona chahiye (which is just 1.5% of capital).
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== TAB 5: PRICE ACTION ==================== -->
     <div id="tab-pa" class="space-y-3 hidden view-tab">
       <div class="glass-panel p-4 rounded-2xl space-y-4">
         <div>
           <h2 class="text-xs font-bold uppercase tracking-wider text-purple-400 flex items-center gap-1.5 mb-2">
-            <i class="fa-solid fa-cubes"></i> Institutional S/R & Structure Matrix
+            <i class="fa-solid fa-cubes"></i> S/R & Market Structure
           </h2>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center mono text-xs">
             <div class="bg-black/60 p-2.5 rounded-xl border border-rose-500/20">
@@ -343,47 +392,18 @@
             </div>
           </div>
         </div>
-
-        <div class="bg-black/40 p-3.5 rounded-xl border border-white/10 space-y-2 text-xs">
-          <h3 class="font-bold text-slate-200 flex items-center gap-1.5">
-            <i class="fa-solid fa-radar text-cyan-400"></i> Pure Confluence Signals:
-          </h3>
-          <div class="space-y-1.5 text-slate-300">
-            <p>• <b>Market Swing:</b> <span id="pa-swing-status" class="text-emerald-400 font-bold">Higher High (HH) & Higher Low (HL)</span></p>
-            <p>• <b>OI Confirmation:</b> <span id="pa-oi-status" class="text-cyan-400 font-bold">Heavy Put Writing defending 24500 strike</span></p>
-            <p>• <b>Trap Probability:</b> <span id="pa-trap-status" class="text-emerald-400 font-bold">LOW (Price above VWAP + Call writers unwinding)</span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== TAB 5: AI ANALYST ==================== -->
-    <div id="tab-ai" class="space-y-3 hidden view-tab">
-      <div class="glass-panel p-4 rounded-2xl space-y-3">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
-          <i class="fa-solid fa-brain"></i> AI Confluence & Setup Assistant
-        </h2>
-        <div class="flex flex-wrap gap-1.5">
-          <button onclick="askAI('confluence')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-cyan-300 hover:bg-slate-700 border border-white/10">What is Confluence Score?</button>
-          <button onclick="askAI('oi')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-amber-300 hover:bg-slate-700 border border-white/10">How to read Change in OI?</button>
-          <button onclick="askAI('vix')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-emerald-300 hover:bg-slate-700 border border-white/10">India VIX Best Range</button>
-          <button onclick="askAI('sandwich')" class="px-2.5 py-1 rounded-full bg-slate-800 text-[11px] text-rose-300 hover:bg-slate-700 border border-white/10">Avoid Sandwich Trap</button>
-        </div>
-        <div id="ai-response-box" class="bg-black/60 border border-white/10 rounded-xl p-3.5 text-xs text-slate-300 leading-relaxed min-h-[100px]">
-          Upar kisi bhi topic par tap karke instant institutional analysis paayein.
-        </div>
       </div>
     </div>
 
     <!-- ==================== TAB 6: RISK CALCULATOR ==================== -->
     <div id="tab-calc" class="space-y-3 hidden view-tab">
       <div class="glass-panel p-4 rounded-2xl space-y-3 text-xs">
-        <h2 class="font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-          <i class="fa-solid fa-calculator"></i> Option Premium Risk & Target Sizer
+        <h2 class="font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-calculator"></i> Premium Position Sizer & Loss Limiter
         </h2>
         <div class="grid grid-cols-3 gap-2">
           <div>
-            <label class="block text-[10px] text-slate-400 mb-1">ENTRY PRICE (₹)</label>
+            <label class="block text-[10px] text-slate-400 mb-1">BUY PRICE (₹)</label>
             <input type="number" id="calc-buy" value="110" oninput="runCalc()" class="w-full bg-slate-900 border border-white/10 rounded-lg p-2 font-bold mono text-white outline-none" />
           </div>
           <div>
@@ -405,7 +425,7 @@
             <span id="out-t1" class="text-sm font-black text-emerald-400">₹130.0</span>
           </div>
           <div class="bg-black/60 p-2 rounded-xl border border-amber-500/30">
-            <span class="text-[9px] text-amber-400 uppercase block font-bold">Total Risk</span>
+            <span class="text-[9px] text-amber-400 uppercase block font-bold">Total Max Loss</span>
             <span id="out-risk" class="text-sm font-black text-amber-400">₹750</span>
           </div>
         </div>
@@ -431,7 +451,7 @@
   <!-- JAVASCRIPT LOGIC ENGINE -->
   <script>
     let simTimer = null;
-    let currentSignalData = { status: 'WAIT', strike: '24550 CE', sl: '10 pts', t1: '20 pts', reason: '', pcr: '1.18', vix: '13.65', gift: '+35' };
+    let currentSignalData = { status: 'WAIT', strike: '24550 CE', sl: '10 pts', t1: '20 pts', reason: '', verdict: 'WAIT' };
 
     function updateClock() {
       const now = new Date();
@@ -446,7 +466,7 @@
       const activeEl = document.getElementById(tabId);
       if(activeEl) activeEl.classList.remove('hidden');
 
-      const tabs = ['scanner', 'oi', 'chart', 'pa', 'ai', 'calc'];
+      const tabs = ['scanner', 'chart', 'oi', 'learning', 'pa', 'calc'];
       tabs.forEach(t => {
         const btn = document.getElementById(`btn-tab-${t}`);
         if(btn) {
@@ -459,22 +479,34 @@
       });
 
       if(tabId === 'tab-chart') {
-        renderTradingViewChart('NSE:NIFTY');
+        renderTradingViewChart('NSE:NIFTYBEES');
       }
     }
 
+    // Chart Renderer using official TradingView Widget constructor
     function renderTradingViewChart(symbol) {
       const box = document.getElementById('tv-chart-box');
       if(!box) return;
-      const cleanSymbol = encodeURIComponent(symbol);
-      box.innerHTML = `
-        <iframe 
-          src="https://www.tradingview-widget.com/embed-widget/advanced-chart/?locale=in#%7B%22symbol%22%3A%22${cleanSymbol}%22%2C%22interval%22%3A%225%22%2C%22timezone%22%3A%22Asia%2FKolkata%22%2C%22theme%22%3A%22dark%22%2C%22style%22%3A%221%22%2C%22withdateranges%22%3Atrue%2C%22hide_side_toolbar%22%3Afalse%2C%22allow_symbol_change%22%3Atrue%2C%22save_image%22%3Afalse%2C%22studies%22%3A%5B%22VWAP%40tv-basicstudies%22%2C%22EMA%40tv-basicstudies%22%5D%2C%22support_host%22%3A%22https%3A%2F%2Fwww.tradingview.com%22%7D" 
-          class="w-full h-full border-0" 
-          allowtransparency="true" 
-          scrolling="no">
-        </iframe>
-      `;
+      box.innerHTML = '<div id="tv_target_div" style="height:100%;width:100%;"></div>';
+      
+      if(window.TradingView) {
+        new TradingView.widget({
+          "autosize": true,
+          "symbol": symbol,
+          "interval": "5",
+          "timezone": "Asia/Kolkata",
+          "theme": "dark",
+          "style": "1",
+          "locale": "in",
+          "toolbar_bg": "#06090f",
+          "enable_publishing": false,
+          "hide_top_toolbar": false,
+          "allow_symbol_change": true,
+          "save_image": false,
+          "studies": ["VWAP@tv-basicstudies", "EMA@tv-basicstudies"],
+          "container_id": "tv_target_div"
+        });
+      }
     }
 
     function changeChartSymbol(symbol, label) {
@@ -505,99 +537,97 @@
       let status = 'WAITING FOR 9 EMA DIP';
       let css = 'signal-wait';
       let phase = 'PULLBACK SCANNING';
-      let reason = 'Price VWAP ke upar hai aur PCR 1.18 Bullish hai. 9 EMA par test candle close hone ka wait karein.';
+      let reason = 'Spot VWAP ke upar hai. 9 EMA par test candle close hone ka wait karein.';
       let strike = `${pivot} CE`;
-      let sl = 'Entry - 10 pts';
-      let t1 = 'Entry + 20 pts (1:2)';
-      let accScore = '70% MODERATE';
-      let pcr = 1.18;
-      let vix = 13.65;
-      let gift = '+35';
+      let verdict = 'WAIT';
+      let verdictBadgeClass = 'bg-amber-500/20 text-amber-400 border border-amber-500/40';
+      let advice = '* 9 EMA par rejection confirmation candle close hone dein.';
 
       if (isChop) {
         status = 'AVOID: LUNCH CHOP ZONE';
         css = 'signal-avoid';
         phase = 'NO-TRADE WINDOW';
-        reason = '11:30 AM - 01:15 PM window: High theta decay risk. OI shifts slow down.';
-        accScore = '20% POOR';
+        reason = '11:30 AM - 01:15 PM timing: High Theta Decay. Option buyers avoid trades.';
+        verdict = 'AVOID (THETA CHOP)';
+        verdictBadgeClass = 'bg-rose-500/20 text-rose-400 border border-rose-500/40';
+        advice = '* Is waqt terminal band rakhein. Capital preservation is priority.';
       } else if ((spot > vwap && spot < ema) || (spot < vwap && spot > ema)) {
         status = 'AVOID: SANDWICH TRAP';
         css = 'signal-avoid';
         phase = 'TRAP ZONE DETECTED';
-        reason = 'Price VWAP aur 9 EMA ke beech phasi hai. False breakout trap se bachein.';
-        accScore = '25% TRAP';
+        reason = 'Price VWAP aur 9 EMA ke beech phasi hai. Dono taraf wicks banenge.';
+        verdict = 'AVOID (SANDWICH TRAP)';
+        verdictBadgeClass = 'bg-rose-500/20 text-rose-400 border border-rose-500/40';
+        advice = '* Price ko VWAP ya 9 EMA ke ek taraf clear nikalne dein.';
       } else if (spot > vwap && ema > vwap) {
         strike = `${pivot} CE`;
-        pcr = 1.24;
-        document.getElementById('hud-pcr').innerText = `${pcr} (BULLISH)`;
-        document.getElementById('hud-pcr').className = 'text-sm font-black text-emerald-400 mono mt-0.5';
-
         if (isNearEMA && candle === 'hammer') {
-          status = '🔥 STRONG BUY CALL (CE) CONFIRMED';
+          status = '🔥 STRONG BUY CALL (CE) TRIGGERED';
           css = 'signal-ce';
-          phase = 'CONFLUENCE BREAKOUT';
-          reason = 'Confluence Pass: Price > VWAP + 9 EMA Hammer + Put Writing at ATM + GIFT Nifty Green.';
-          accScore = '88% VERY HIGH';
+          phase = 'HIGH MOMENTUM BOUNCE';
+          reason = 'Confluence Pass: Price > VWAP + 9 EMA Hammer + Put Writing Support + GIFT Green.';
+          verdict = '🟢 BUY CALL (CE)';
+          verdictBadgeClass = 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40';
+          advice = `* Trigger Candle High cross hote hi ${strike} buy karein. Entry se fixed 10 pts SL rakhein.`;
         } else if (candle === 'big_green') {
           status = 'WAIT: DO NOT CHASE TOP';
           css = 'signal-wait';
-          phase = 'EXTENDED CANDLE';
-          reason = 'Badi green candle nikal chuki hai. Pullback ka intezar karein discount entry ke liye.';
-          accScore = '65% CAUTION';
+          phase = 'FOMO WARNING';
+          reason = 'Badi green candle bhaag chuki hai. Pullback ka wait karein saste rate ke liye.';
+          verdict = 'WAIT (FOMO)';
         } else {
           status = 'BULLISH: WAIT FOR 9 EMA DIP';
           css = 'signal-wait';
           phase = 'PULLBACK READY';
-          reason = `Market Bullish hai (PCR: ${pcr}). 9 EMA level (${ema}) par green rejection ka intezar karein.`;
-          accScore = '75% PENDING';
+          reason = `Market Bullish hai. 9 EMA line (${ema}) par dip lene dein.`;
+          verdict = 'WAITING FOR 9 EMA';
         }
       } else if (spot < vwap && ema < vwap) {
         strike = `${pivot} PE`;
-        pcr = 0.76;
-        document.getElementById('hud-pcr').innerText = `${pcr} (BEARISH)`;
-        document.getElementById('hud-pcr').className = 'text-sm font-black text-rose-400 mono mt-0.5';
-
         if (isNearEMA && candle === 'shooting_star') {
-          status = '🔥 STRONG BUY PUT (PE) CONFIRMED';
+          status = '🔥 STRONG BUY PUT (PE) TRIGGERED';
           css = 'signal-pe';
           phase = 'BEARISH CONFLUENCE';
-          reason = 'Confluence Pass: Price < VWAP + 9 EMA Shooting Star + Call Writing Surge + PCR Bearish.';
-          accScore = '88% VERY HIGH';
+          reason = 'Confluence Pass: Price < VWAP + 9 EMA Shooting Star + Call Writing Pressure.';
+          verdict = '🔴 BUY PUT (PE)';
+          verdictBadgeClass = 'bg-rose-500/20 text-rose-400 border border-rose-500/40';
+          advice = `* Trigger Candle Low break hote hi ${strike} buy karein. Entry se fixed 10 pts SL rakhein.`;
         } else {
           status = 'BEARISH: WAIT FOR 9 EMA TEST';
           css = 'signal-wait';
           phase = 'PULLBACK READY';
           reason = `Market Downtrend mein hai. 9 EMA resistance (${ema}) test hone dein.`;
-          accScore = '72% PENDING';
+          verdict = 'WAITING FOR 9 EMA';
         }
       }
 
+      // Update HUD
       const hud = document.getElementById('signal-hud');
       hud.className = 'glass-panel p-4 rounded-2xl transition-all ' + css;
       document.getElementById('sig-phase-badge').innerText = phase;
       document.getElementById('sig-title').innerText = status;
       document.getElementById('sig-explanation').innerText = reason;
-      document.getElementById('res-strike').innerText = strike;
-      document.getElementById('res-sl').innerText = sl;
-      document.getElementById('res-t1').innerText = t1;
-      document.getElementById('hud-acc').innerText = accScore;
 
-      currentSignalData = { status, strike, sl, t1, reason, spot, vwap, ema, pcr, vix, gift };
+      // Update Verdict Box
+      const badge = document.getElementById('verdict-action-badge');
+      badge.innerText = verdict;
+      badge.className = 'text-[10px] font-black px-2 py-0.5 rounded ' + verdictBadgeClass;
+      document.getElementById('verdict-strike').innerText = strike;
+      document.getElementById('verdict-advice').innerText = advice;
+
+      currentSignalData = { status, strike, sl: 'Entry - 10 pts', t1: 'Entry + 20 pts', reason, verdict };
     }
 
     function shareViaWhatsApp() {
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const text = `🚨 *APEX CONFLUENCE SIGNAL (${time})* 🚨\n\n` +
-                   `📌 *Signal:* ${currentSignalData.status}\n` +
-                   `🎯 *Recommended Strike:* ${currentSignalData.strike}\n` +
-                   `🛑 *Stop Loss:* ${currentSignalData.sl}\n` +
-                   `🏁 *Target 1 (1:2 R:R):* ${currentSignalData.t1}\n\n` +
-                   `📊 *Confluence Data:*\n` +
-                   `• Spot: ${currentSignalData.spot} | VWAP: ${currentSignalData.vwap} | 9 EMA: ${currentSignalData.ema}\n` +
-                   `• Option PCR: ${currentSignalData.pcr} | India VIX: ${currentSignalData.vix}\n` +
-                   `• GIFT Nifty: ${currentSignalData.gift} Pts\n\n` +
-                   `💡 *Reason:* ${currentSignalData.reason}\n\n` +
-                   `_Apex 9 EMA, VWAP, OI & VIX Strict Execution_`;
+      const text = `🚨 *APEX TERMINAL TRADE VERDICT (${time})* 🚨\n\n` +
+                   `📌 *Action Verdict:* ${currentSignalData.verdict}\n` +
+                   `🎯 *Recommended Contract:* ${currentSignalData.strike}\n` +
+                   `🛑 *System Stop Loss:* 8–10 Points Fixed\n` +
+                   `🏁 *Target 1 (1:2 R:R):* +20 Points (Book 70%)\n` +
+                   `🏁 *Target 2 (Runner):* +35 Points (SL to Cost)\n\n` +
+                   `💡 *Reasoning:* ${currentSignalData.reason}\n\n` +
+                   `_Apex 9 EMA, VWAP & Strict Discipline Blueprint_`;
       window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
     }
 
@@ -643,19 +673,6 @@
       evaluateSignal();
     }
 
-    function askAI(type) {
-      const out = document.getElementById('ai-response-box');
-      if(type === 'confluence') {
-        out.innerHTML = `<b class="text-cyan-400">⚡ MULTI-CONFLUENCE FORMULA:</b><br>Single indicator 50% accurate hota hai, lekin jab:<br>1. Price > VWAP (Institutional Trend)<br>2. 9 EMA Pullback Rejection (Exact Entry)<br>3. PCR > 1.10 (Put Writers Guarding)<br>4. VIX in 12–16 Zone<br>Yeh 4 cheezein milkar win-rate ko 85%+ le jaati hain.`;
-      } else if(type === 'oi') {
-        out.innerHTML = `<b class="text-amber-400">📊 CHANGE IN OI SECRETS:</b><br>• Agar Call OI kam ho raha hai (- Chg in Call OI), iska matlab Call Sellers darr kar bhaag rahe hain (Short Covering Rally incoming).<br>• Agar Put OI tezi se badh raha hai (+ Chg in Put OI), toh support solid rock ban raha hai.`;
-      } else if(type === 'vix') {
-        out.innerHTML = `<b class="text-emerald-400">🌡️ INDIA VIX GUIDELINES:</b><br>• <b>11 - 15:</b> Best Option Buying Zone (Smooth trends, predictable SL).<br>• <b>< 11:</b> Severe Chop / Theta Decay Zone (Scalping only).<br>• <b>> 18:</b> High Volatility (Stop Loss hit hone ke chances high, trade half quantity).`;
-      } else if(type === 'sandwich') {
-        out.innerHTML = `<b class="text-rose-400">⚠️ SANDWICH TRAP:</b><br>Jab price VWAP aur 9 EMA ke beech phasi hoti hai aur PCR 0.90 - 1.05 ke beech hota hai, market dono taraf wicks banakar retail buyers ka SL khati hai. Strictly 0 trades in this zone.`;
-      }
-    }
-
     function runCalc() {
       const p = parseFloat(document.getElementById('calc-buy').value) || 0;
       const sl = parseFloat(document.getElementById('calc-sl').value) || 10;
@@ -670,13 +687,13 @@
       if(!val) return alert('Token enter karein!');
       document.getElementById('api-status-badge').className = "px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold";
       document.getElementById('api-status-badge').innerText = "Upstox: Connected";
-      alert('Upstox Token saved! Real-time synchronization active.');
+      alert('Upstox Token saved!');
       switchView('tab-scanner');
     }
 
     evaluateSignal();
     runCalc();
-    renderTradingViewChart('NSE:NIFTY');
+    renderTradingViewChart('NSE:NIFTYBEES');
   </script>
 </body>
 </html>
